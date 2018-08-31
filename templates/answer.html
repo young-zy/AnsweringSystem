@@ -29,19 +29,57 @@
                 <div class="mdui-collapse-item mdui-collapse-item-open">
                     <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
                         <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">near_me</i>
-                        <div class="mdui-list-item-content">控制面板</div>
+
                         <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                     </div>
                 </div>
             </div>
         </div>
 
-
-
-
-
         <div class="mdui-container">
 
+            <br>
+            <form method="POST">
+                <input type="number" name="number" value="{{ number }}" hidden/>
+                <div class="mdui-card mdui-hoverable">
+                    <div class="mdui-card" style="padding: 3px">
+                        <label class="mdui-radio">
+                            <input type="radio" name="group1"value="A"/>
+                            <i class="mdui-radio-icon"></i>
+                            A.
+                        </label>
+                    </div>
+                </div>
+                <div class="mdui-card mdui-hoverable">
+                    <div class="mdui-card" style="padding: 3px">
+                        <label class="mdui-radio">
+                            <input type="radio" name="group1" value="B"/>
+                            <i class="mdui-radio-icon"></i>
+                            B.
+                        </label>
+                    </div>
+                </div>
+                <div class="mdui-card mdui-hoverable">
+                    <div class="mdui-card" style="padding: 3px">
+                        <label class="mdui-radio">
+                            <input type="radio" name="group1" value="C"/>
+                            <i class="mdui-radio-icon"></i>
+                            C.
+                        </label>
+                    </div>
+                </div>
+                <div class="mdui-card mdui-hoverable">
+                    <div class="mdui-card" style="padding: 3px">
+                        <label class="mdui-radio">
+                            <input type="radio" name="group1" value="D"/>
+                            <i class="mdui-radio-icon"></i>
+                            D.
+                        </label>
+                    </div>
+                </div>
+                <br>
+                <button class="mdui-btn mdui-btn-block mdui-btn-raised mdui-ripple mdui-color-theme-accent" type="submit">下一题</button>
+            </form>
         </div>
     </body>
 
