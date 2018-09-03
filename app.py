@@ -4,8 +4,6 @@ from flask import request
 from flask import session
 from flask import redirect
 from flask import g
-import os
-from flask import escape
 
 import json
 
@@ -15,6 +13,7 @@ app.secret_key = "dashfbdkfbasdkfvnmasdfnc"
 
 @app.before_request
 def before_request():
+    assert isinstance(g, object)
     g.f = open("data.json", encoding="utf-8")
     g.data = json.load(g.f)
     g.dict_arr = g.data['list']
@@ -58,7 +57,10 @@ def logout():
 def answer(number):
     if request.method == "GET":
         if 'username' in session:
-            return render_template('answer.html', number=number, total_num=g.total_num, id_list=g.id_list)
+            return render_template('answer.html', number=number, total_num=g.total_num,
+                                   id_list=g.id_list, question=g.dict_arr[number-1]["title"],
+                                   img_path=g.dict_arr[number-1]["imgpath"],
+                                   item=g.dict_arr[number-1]["items"])
         else:
             return redirect('/login')
     else:

@@ -5,15 +5,13 @@
         <meta name="viewport"
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Mdui Test</title>
+        <title>答题系统</title>
         <link rel="stylesheet" href="/static/css/mdui.min.css">
         <script src="/static/js/mdui.min.js"></script>
     </head>
 
     <body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink mdui-loaded mdui-drawer-body-left">
-        <div class="mdui-progress">
-                <div class="mdui-progress-determinate" style="width: {{ number/total_num*100 }}%"></div>
-        </div>
+
 
         <header class="mdui-appbar mdui-appbar-fixed">
             <div class="mdui-toolbar mdui-color-theme">
@@ -24,6 +22,9 @@
                 <a href="" class="mdui-typo-title"></a>
                 <div class="mdui-toolbar-spacer"></div>
                 <a href="/logout" class="mc-login-btn mdui-btn mdui-btn-dense mdui-ripple mdui-ripple-white">退出</a>
+            </div>
+            <div class="mdui-progress">
+                <div class="mdui-progress-determinate" style="width: {{ number/total_num*100 }}%"></div>
             </div>
         </header>
 
@@ -48,8 +49,13 @@
 
 
         <div class="mdui-container">
-
-            <div class="doc-intro mdui-typo"></div>
+            <br>
+            <div class="doc-intro mdui-typo">
+                <h1>{{ number }}. {{ question }}</h1>
+            </div>
+            {% if img_path %}
+                <img src="/static/images/{{ img_path }}" class="mdui-img-fluid mdui-img-rounded">
+            {% endif %}
             <br>
             <form method="POST" id="main_form">
                 <input id="num" type="number" name="number" value="{{ number }}" hidden/>
@@ -58,7 +64,7 @@
                         <label class="mdui-radio">
                             <input type="radio" name="group1" value="1"/>
                             <i class="mdui-radio-icon"></i>
-                            A.
+                            A. {{ item[0] }}
                         </label>
                     </div>
                 </div>
@@ -67,7 +73,7 @@
                         <label class="mdui-radio">
                             <input type="radio" name="group1" value="2"/>
                             <i class="mdui-radio-icon"></i>
-                            B.
+                            B. {{ item[1] }}
                         </label>
                     </div>
                 </div>
@@ -76,7 +82,7 @@
                         <label class="mdui-radio">
                             <input type="radio" name="group1" value="3"/>
                             <i class="mdui-radio-icon"></i>
-                            C.
+                            C. {{ item[2] }}
                         </label>
                     </div>
                 </div>
@@ -85,7 +91,7 @@
                         <label class="mdui-radio">
                             <input type="radio" name="group1" value="4"/>
                             <i class="mdui-radio-icon"></i>
-                            D.
+                            D. {{ item[3] }}
                         </label>
                     </div>
                 </div>
