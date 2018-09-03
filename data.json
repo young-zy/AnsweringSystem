@@ -4,7 +4,7 @@
     {
       "id": 1,
       "title": "驾驶技能准考证明的有效期是多久？",
-      "imgpath": "./static/test.JPG",
+      "imgpath": "test.JPG",
       "items": [
         "1年",
         "2年",
@@ -17,7 +17,7 @@
     {
       "id": 2,
       "title": "驾驶人有哪种情形，交通警察可依法扣留机动车驾驶证？",
-      "imgpath": "./src/images/test.JPG",
+      "imgpath": "test.JPG",
       "items": [
         "饮酒后驾驶机动车",
         "超过规定速度10%",
