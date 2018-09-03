@@ -62,7 +62,7 @@
                 <div class="mdui-card mdui-hoverable">
                     <div class="mdui-card" style="padding: 3px">
                         <label class="mdui-radio">
-                            <input type="radio" name="group1" value="1"/>
+                            <input type="radio" name="group1" value="0"/>
                             <i class="mdui-radio-icon"></i>
                             A. {{ item[0] }}
                         </label>
@@ -71,7 +71,7 @@
                 <div class="mdui-card mdui-hoverable">
                     <div class="mdui-card" style="padding: 3px">
                         <label class="mdui-radio">
-                            <input type="radio" name="group1" value="2"/>
+                            <input type="radio" name="group1" value="1"/>
                             <i class="mdui-radio-icon"></i>
                             B. {{ item[1] }}
                         </label>
@@ -80,7 +80,7 @@
                 <div class="mdui-card mdui-hoverable">
                     <div class="mdui-card" style="padding: 3px">
                         <label class="mdui-radio">
-                            <input type="radio" name="group1" value="3"/>
+                            <input type="radio" name="group1" value="2"/>
                             <i class="mdui-radio-icon"></i>
                             C. {{ item[2] }}
                         </label>
@@ -89,7 +89,7 @@
                 <div class="mdui-card mdui-hoverable">
                     <div class="mdui-card" style="padding: 3px">
                         <label class="mdui-radio">
-                            <input type="radio" name="group1" value="4"/>
+                            <input type="radio" name="group1" value="3"/>
                             <i class="mdui-radio-icon"></i>
                             D. {{ item[3] }}
                         </label>
@@ -135,7 +135,7 @@
                 }
             });
             {% if selected %}
-                document.getElementsByName("group1")[{{ selected-1 }}].setAttribute("checked","");
+                document.getElementsByName("group1")[{{ selected }}].setAttribute("checked","");
             {% endif %}
             document.getElementById('previous').addEventListener('click', function GotoPrevious(){
                 document.getElementById("forward_flag").setAttribute("value","false");

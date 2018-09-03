@@ -8,7 +8,13 @@ from flask import g
 import json
 
 app = Flask(__name__)
-app.secret_key = "dashfbdkfbasdkfvnmasdfnc"
+app.secret_key = "dashfbdkfbasdkfvnmasdfnc"      """Please be sure to change this value 
+                                                    into a long random value 
+                                                    in the production environment
+                                                    
+                                                    Be sure that no one else can get this key,
+                                                    since it encrypts the user session
+                                                    """
 
 
 @app.before_request
@@ -57,12 +63,15 @@ def answer(number):
     if request.method == "GET":
         if 'username' in session:
             if "%d" % number in session:
-                return render_template('answer.html', number=number, total_num=g.total_num,
-                                       id_list=g.id_list, question=g.dict_arr[number-1]["title"],
-                                       img_path=g.dict_arr[number-1]["imgpath"],
-                                       item=g.dict_arr[number-1]["items"],
-                                       selected=int(session.get("%d" % number))
-                                       )
+                if number != g.total_num:
+                    return render_template('answer.html', number=number, total_num=g.total_num,
+                                           id_list=g.id_list, question=g.dict_arr[number-1]["title"],
+                                           img_path=g.dict_arr[number-1]["imgpath"],
+                                           item=g.dict_arr[number-1]["items"],
+                                           selected=int(session.get("%d" % number))
+                                           )
+                else:
+                    return render_template("result.html")
             else:
                 return render_template('answer.html', number=number, total_num=g.total_num,
                                        id_list=g.id_list, question=g.dict_arr[number-1]["title"],
