@@ -116,6 +116,7 @@
         </div>
 
         <script>
+
             let inst = new mdui.Dialog('#dialog');
             document.getElementById('submit').addEventListener('click', function SubmitForm(){
                 let group1 = document.getElementsByName('group1');
@@ -133,7 +134,9 @@
                     form.submit();
                 }
             });
-
+            {% if selected %}
+                document.getElementsByName("group1")[{{ selected-1 }}].setAttribute("checked","");
+            {% endif %}
             document.getElementById('previous').addEventListener('click', function GotoPrevious(){
                 document.getElementById("forward_flag").setAttribute("value","false");
                 let form = document.getElementById("main_form");

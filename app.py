@@ -57,20 +57,27 @@ def logout():
 def answer(number):
     if request.method == "GET":
         if 'username' in session:
-            return render_template('answer.html', number=number, total_num=g.total_num,
-                                   id_list=g.id_list, question=g.dict_arr[number-1]["title"],
-                                   img_path=g.dict_arr[number-1]["imgpath"],
-                                   item=g.dict_arr[number-1]["items"])
+            if "%d" % number in session:
+                return render_template('answer.html', number=number, total_num=g.total_num,
+                                       id_list=g.id_list, question=g.dict_arr[number-1]["title"],
+                                       img_path=g.dict_arr[number-1]["imgpath"],
+                                       item=g.dict_arr[number-1]["items"],
+                                       selected=int(session.get("%d" % number))
+                                       )
+            else:
+                return render_template('answer.html', number=number, total_num=g.total_num,
+                                       id_list=g.id_list, question=g.dict_arr[number-1]["title"],
+                                       img_path=g.dict_arr[number-1]["imgpath"],
+                                       item=g.dict_arr[number-1]["items"]
+                                       )
         else:
             return redirect('/login')
     else:
-        tmp = request.form.get('group1')
-        if tmp is not None:
-            session['%d' % int(request.form.get('number'))] = tmp
+        if request.form.get("forward") == "true":
+            session['%d' % int(request.form.get('number'))] = request.form.get('group1')
             number = number + 1
         else:
-            if number is not 1:
-                number = number - 1
+            number = number - 1
         session['number'] = number
         return redirect('/answer/%d' % number)
 
