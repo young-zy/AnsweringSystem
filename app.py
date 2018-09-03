@@ -50,6 +50,7 @@ def login():
 def logout():
     session.pop('username', None)
     session.pop('number', None)
+    session.clear
     return redirect('/login')
 
 
