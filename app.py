@@ -44,6 +44,8 @@ def index():
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "GET":
+        if 'username' in session:
+            return redirect('/answer/%d' % session.get("number"))
         return render_template("login.html")
     else:
         username = request.form.get('username')
