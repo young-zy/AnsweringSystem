@@ -22,6 +22,7 @@ def before_request():
     assert isinstance(g, object)
     g.f = open("data.json", encoding="utf-8")
     g.data = json.load(g.f)
+    g.f.close()
     g.dict_arr = g.data['list']
     g.total_num = len(g.dict_arr)
     g.id_list = []
@@ -63,21 +64,51 @@ def answer(number):
     if request.method == "GET":
         if 'username' in session:
             if "%d" % number in session:
-                if number != g.total_num:
+                if 0 < number < g.total_num:
                     return render_template('answer.html', number=number, total_num=g.total_num,
                                            id_list=g.id_list, question=g.dict_arr[number-1]["title"],
                                            img_path=g.dict_arr[number-1]["imgpath"],
                                            item=g.dict_arr[number-1]["items"],
                                            selected=int(session.get("%d" % number))
                                            )
+                elif number == g.total_num + 1:
+                    print(g.total_num + 1)
+                    g.name = session.get("name")
+                    g.answer_set = {"name": session.get("name")}
+                    for i in range(1, g.total_num+1):
+                        g.answer_set["%d" % i] = case(session.get("%d" % i))
+                    try:
+                        g.f = open("%s" % session.get("name"), )
+                        g.f.write(str(g.answer_set))
+                    finally:
+                        g.f.close()
+                    return redirect("/logout")
                 else:
-                    return render_template("result.html")
+                    return redirect("/login")
             else:
-                return render_template('answer.html', number=number, total_num=g.total_num,
-                                       id_list=g.id_list, question=g.dict_arr[number-1]["title"],
-                                       img_path=g.dict_arr[number-1]["imgpath"],
-                                       item=g.dict_arr[number-1]["items"]
-                                       )
+                if 0 < number < g.total_num + 1:
+                    return render_template('answer.html', number=number, total_num=g.total_num,
+                                           id_list=g.id_list, question=g.dict_arr[number-1]["title"],
+                                           img_path=g.dict_arr[number-1]["imgpath"],
+                                           item=g.dict_arr[number-1]["items"]
+                                           )
+                elif number == g.total_num + 1:
+                    try:
+                        g.f = open("%s" % session.get("username"), "w")
+                        g.name = session.get("name")
+                        g.answer_set = {"name": session.get("username")}
+                        g.f.write("name: %s" % session.get("username") + "\n")
+                        for i in range(1, g.total_num+1):
+                            if session.get("%d" % i) is not None:
+                                g.answer_set["%d" % i] = case(int(session.get("%d" % i)))
+                                g.f.write("%d. " % i + case(int(session.get("%d" % i))) + "\n")
+                    finally:
+                        g.f.write(str(g.answer_set))
+                        g.f.close()
+                        g.answer_set.clear()
+                    return redirect("/logout")
+                else:
+                    return redirect("/login")
         else:
             return redirect('/login')
     else:
@@ -88,6 +119,19 @@ def answer(number):
             number = number - 1
         session['number'] = number
         return redirect('/answer/%d' % number)
+
+
+def case(i):
+    if i == 0:
+        return "A"
+    elif i == 1:
+        return "B"
+    elif i == 2:
+        return "C"
+    elif i == 3:
+        return "D"
+    else:
+        return "ERROR"
 
 
 if __name__ == '__main__':
