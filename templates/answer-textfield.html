@@ -63,7 +63,10 @@
 
                 <input id="forward_flag" type="text" name="forward" value="true" hidden/>
             </form>
-
+            <div class="mdui-textfield mdui-textfield-floating-label" >
+                <label class="mdui-textfield-label">Answer</label>
+                <textarea class="mdui-textfield-input" rows="6" form="main_form" name="group1"></textarea>
+            </div>
             <div class="mdui-row-xs-2">
                 <div class="mdui-col">
                     <button class="mdui-btn mdui-btn-block mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="previous">上一题</button>
@@ -86,11 +89,8 @@
             document.getElementById('submit').addEventListener('click', function SubmitForm(){
                 let group1 = document.getElementsByName('group1');
                 let flag = false;
-                for (let i = 0; i < group1.length; i++) {
-                    if (group1[i].checked) {
-                        flag = true;
-                        break;
-                    }
+                if(group1.text !== ""){
+                    flag = true;
                 }
                 if(!flag){
                     inst.open();
@@ -99,11 +99,7 @@
                     form.submit();
                 }
             });
-            {% if args.selected %}
-                {% for item in args.selected %}
-                    document.getElementsByName("group1")[{{ item }}].setAttribute("checked","");
-                {% endfor %}
-            {% endif %}
+
             document.getElementById('previous').addEventListener('click', function GotoPrevious(){
                 document.getElementById("forward_flag").setAttribute("value","false");
                 let form = document.getElementById("main_form");
