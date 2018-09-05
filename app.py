@@ -74,10 +74,13 @@ def answer(number):
                     img_path=g.dict_arr[number - 1]["imgpath"],
                     question=g.dict_arr[number - 1]["title"],
                     item=g.dict_arr[number - 1]["items"],
-                    selected=None
+                    selected=[]
                 )
                 if "%d" % number in session:
-                    args.update(selected=int(session.get("%d" % number)))
+                    print(session.get("%d" % number))
+                    args.update(selected=list(map(int, session.get("%d" % number))))
+                if g.dict_arr[number - 1]["type"] == "multiple":
+                    return render_template("answer-multiple.html", args=args)
                 return render_template('answer.html', args=args)
             else:
                 return redirect("/login")
@@ -86,6 +89,7 @@ def answer(number):
     else:
         if request.form.get("forward") == "true":
             session['%d' % int(request.form.get('number'))] = request.form.get('group1')
+            print(session.get('%d' % int(request.form.get('number'))))
             number = number + 1
         else:
             number = number - 1
@@ -103,8 +107,11 @@ def submit():
         g.f.write("name: %s" % session.get("username") + "\n")
         for i in range(1, g.total_num + 1):
             if session.get("%d" % i) is not None:
-                g.answer_set["%d" % i] = case(int(session.get("%d" % i)))
-                g.f.write("%d. " % i + case(int(session.get("%d" % i))) + "\n")
+                g.answer_set["%d" % i] = list(map(int, session.get("%d" % i)))
+                g.f.write("%d. " % i)
+                for item in list(map(int, session.get("%d" % i))):
+                    g.f.write(case(item) + ", ")
+                g.f.write("\n")
     finally:
         g.f.write(str(g.answer_set))
         g.f.close()

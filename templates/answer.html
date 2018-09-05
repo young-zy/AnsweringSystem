@@ -136,7 +136,9 @@
                 }
             });
             {% if args.selected %}
-                document.getElementsByName("group1")[{{ args.selected }}].setAttribute("checked","");
+                {% for item in args.selected %}
+                    document.getElementsByName("group1")[{{ item }}].setAttribute("checked","");
+                {% endfor %}
             {% endif %}
             document.getElementById('previous').addEventListener('click', function GotoPrevious(){
                 document.getElementById("forward_flag").setAttribute("value","false");

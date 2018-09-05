@@ -24,7 +24,7 @@
                 <a href="/logout" class="mc-login-btn mdui-btn mdui-btn-dense mdui-ripple mdui-ripple-white">退出</a>
             </div>
             <div class="mdui-progress">
-                <div class="mdui-progress-determinate" style="width: {{ number/total_num*100 }}%"></div>
+                <div class="mdui-progress-determinate" style="width: {{ args.number/args.total_num*100 }}%"></div>
             </div>
         </header>
 
@@ -38,7 +38,7 @@
                         <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                     </div>
                     <ul class="mdui-collapse-item-body mdui-list">
-                        {% for id in id_list %}
+                        {% for id in args.id_list %}
                             <a href="/answer/{{ id }}" class="mdui-list-item mdui-ripple">{{ id }}</a>
                         {% endfor %}
                     </ul>
@@ -51,53 +51,55 @@
         <div class="mdui-container">
             <br>
             <div class="doc-intro mdui-typo">
-                <h1>{{ number }}. {{ question }}</h1>
+                <h1>{{ args.number }}. {{ args.question }}</h1>
             </div>
-            {% if img_path %}
-                <img src="/static/images/{{ img_path }}" class="mdui-img-fluid mdui-img-rounded">
+            {% if args.img_path %}
+                <img src="/static/images/{{ args.img_path }}" class="mdui-img-fluid mdui-img-rounded">
             {% endif %}
             <br>
-            <form method="POST" id="main_form">
-                <input id="num" type="number" name="number" value="{{ number }}" hidden/>
+            <form method="post" id="main_form">
+                <input id="num" type="number" name="number" value="{{ args.number }}" hidden/>
+                <input id="forward_flag" type="text" name="forward" value="true" hidden/>
+                <input id="result_input" type='text' name='group1' hidden/>
+            </form>
                 <div class="mdui-card mdui-hoverable">
                     <div class="mdui-card" style="padding: 3px">
-                        <label class="mdui-radio">
-                            <input type="radio" name="group1" value="0"/>
-                            <i class="mdui-radio-icon"></i>
-                            A. {{ item[0] }}
+                        <label class="mdui-checkbox" style="width: 100%">
+                            <input type="checkbox" name="group" value="0"/>
+                            <i class="mdui-checkbox-icon"></i>
+                            A. {{ args.item[0] }}
                         </label>
                     </div>
                 </div>
                 <div class="mdui-card mdui-hoverable">
                     <div class="mdui-card" style="padding: 3px">
-                        <label class="mdui-radio">
-                            <input type="radio" name="group1" value="1"/>
-                            <i class="mdui-radio-icon"></i>
-                            B. {{ item[1] }}
+                        <label class="mdui-checkbox" style="width: 100%">
+                            <input type="checkbox" name="group" value="1"/>
+                            <i class="mdui-checkbox-icon"></i>
+                            B. {{ args.item[1] }}
                         </label>
                     </div>
                 </div>
                 <div class="mdui-card mdui-hoverable">
                     <div class="mdui-card" style="padding: 3px">
-                        <label class="mdui-radio">
-                            <input type="radio" name="group1" value="2"/>
-                            <i class="mdui-radio-icon"></i>
-                            C. {{ item[2] }}
+                        <label class="mdui-checkbox" style="width: 100%">
+                            <input type="checkbox" name="group" value="2"/>
+                            <i class="mdui-checkbox-icon"></i>
+                            C. {{ args.item[2] }}
                         </label>
                     </div>
                 </div>
                 <div class="mdui-card mdui-hoverable">
                     <div class="mdui-card" style="padding: 3px">
-                        <label class="mdui-radio">
-                            <input type="radio" name="group1" value="3"/>
-                            <i class="mdui-radio-icon"></i>
-                            D. {{ item[3] }}
+                        <label class="mdui-checkbox" style="width: 100%">
+                            <input type="checkbox" name="group" value="3"/>
+                            <i class="mdui-checkbox-icon"></i>
+                            D. {{ args.item[3] }}
                         </label>
                     </div>
                 </div>
                 <br>
-                <input id="forward_flag" type="text" name="forward" value="true" hidden/>
-            </form>
+
 
             <div class="mdui-row-xs-2">
                 <div class="mdui-col">
@@ -116,27 +118,33 @@
         </div>
 
         <script>
-
             let inst = new mdui.Dialog('#dialog');
             document.getElementById('submit').addEventListener('click', function SubmitForm(){
-                let group1 = document.getElementsByName('group1');
+                let group1 = document.getElementsByName('group');
+                let result = "";
                 let flag = false;
                 for (let i = 0; i < group1.length; i++) {
                     if (group1[i].checked) {
                         flag = true;
-                        break;
+                        result += i
                     }
                 }
                 if(!flag){
                     inst.open();
                 }else{
                     let form = document.getElementById("main_form");
+
+                    document.getElementById("result_input").setAttribute("value",result);
                     form.submit();
                 }
             });
-            {% if selected %}
-                document.getElementsByName("group1")[{{ selected }}].setAttribute("checked","");
+
+            {% if args.selected %}
+                {% for item in args.selected %}
+                    document.getElementsByName("group")[{{ item }}].setAttribute("checked","");
+                {% endfor %}
             {% endif %}
+
             document.getElementById('previous').addEventListener('click', function GotoPrevious(){
                 document.getElementById("forward_flag").setAttribute("value","false");
                 let form = document.getElementById("main_form");
@@ -145,11 +153,10 @@
             if(Number(document.getElementById("num").getAttribute("value")) === 1){
                 document.getElementById("previous").setAttribute("disabled","");
             }
-            if(Number(document.getElementById("num").getAttribute("value")) === {{ total_num }}){
-                document.getElementById("submit").innerText = "提交"
-                document.getElementById("main_form").setAttribute("action","submit")
+            if(Number(document.getElementById("num").getAttribute("value")) === {{ args.total_num }}){
+                document.getElementById("submit").innerText = "提交";
+                document.getElementById("main_form").setAttribute("action","submit");
             }
         </script>
     </body>
-
 </html>
