@@ -89,9 +89,10 @@ def answer(number):
     else:
         if request.form.get("forward") == "true":
             session['%d' % int(request.form.get('number'))] = request.form.get('group1')
-            print(session.get('%d' % int(request.form.get('number'))))
             number = number + 1
         else:
+            if request.form.get('group1') is not None:
+                session['%d' % int(request.form.get('number'))] = request.form.get('group1')
             number = number - 1
         session['number'] = number
         return redirect('/answer/%d' % number)

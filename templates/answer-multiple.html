@@ -21,6 +21,7 @@
                 <a href="./answer.html" class="mdui-typo-headline mdui-hidden-xs">答题系统</a>
                 <a href="" class="mdui-typo-title"></a>
                 <div class="mdui-toolbar-spacer"></div>
+                <!--suppress HtmlUnknownTarget -->
                 <a href="/logout" class="mc-login-btn mdui-btn mdui-btn-dense mdui-ripple mdui-ripple-white">退出</a>
             </div>
             <div class="mdui-progress">
@@ -148,6 +149,14 @@
             document.getElementById('previous').addEventListener('click', function GotoPrevious(){
                 document.getElementById("forward_flag").setAttribute("value","false");
                 let form = document.getElementById("main_form");
+                let group1 = document.getElementsByName('group');
+                let result = "";
+                for (let i = 0; i < group1.length; i++) {
+                    if (group1[i].checked) {
+                        result += i
+                    }
+                }
+                document.getElementById("result_input").setAttribute("value",result);
                 form.submit();
             });
             if(Number(document.getElementById("num").getAttribute("value")) === 1){
