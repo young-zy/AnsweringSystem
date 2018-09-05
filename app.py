@@ -26,7 +26,7 @@ def before_request():
     g.dict_arr = g.data['list']
     g.total_num = len(g.dict_arr)
     g.id_list = []
-    for i in range(1, g.total_num+1):
+    for i in range(1, g.total_num + 1):
         g.id_list.append(i)
 
     if request.path == "/login":
@@ -65,52 +65,22 @@ def logout():
 def answer(number):
     if request.method == "GET":
         if 'username' in session:
-            if "%d" % number in session:
-                if 0 < number < g.total_num:
-                    return render_template('answer.html', number=number, total_num=g.total_num,
-                                           id_list=g.id_list, question=g.dict_arr[number-1]["title"],
-                                           img_path=g.dict_arr[number-1]["imgpath"],
-                                           item=g.dict_arr[number-1]["items"],
-                                           selected=int(session.get("%d" % number))
-                                           )
-                elif number == g.total_num + 1:
-                    print(g.total_num + 1)
-                    g.name = session.get("name")
-                    g.answer_set = {"name": session.get("name")}
-                    for i in range(1, g.total_num+1):
-                        g.answer_set["%d" % i] = case(session.get("%d" % i))
-                    try:
-                        g.f = open("%s" % session.get("name"), )
-                        g.f.write(str(g.answer_set))
-                    finally:
-                        g.f.close()
-                    return redirect("/logout")
-                else:
-                    return redirect("/login")
+            if 0 < number < g.total_num + 1:
+                args = {}
+                args.update(
+                    number=number,
+                    total_num=g.total_num,
+                    id_list=g.id_list,
+                    img_path=g.dict_arr[number - 1]["imgpath"],
+                    question=g.dict_arr[number - 1]["title"],
+                    item=g.dict_arr[number - 1]["items"],
+                    selected=None
+                )
+                if "%d" % number in session:
+                    args.update(selected=int(session.get("%d" % number)))
+                return render_template('answer.html', args=args)
             else:
-                if 0 < number < g.total_num + 1:
-                    return render_template('answer.html', number=number, total_num=g.total_num,
-                                           id_list=g.id_list, question=g.dict_arr[number-1]["title"],
-                                           img_path=g.dict_arr[number-1]["imgpath"],
-                                           item=g.dict_arr[number-1]["items"]
-                                           )
-                elif number == g.total_num + 1:
-                    try:
-                        g.f = open("%s" % session.get("username"), "w")
-                        g.name = session.get("name")
-                        g.answer_set = {"name": session.get("username")}
-                        g.f.write("name: %s" % session.get("username") + "\n")
-                        for i in range(1, g.total_num+1):
-                            if session.get("%d" % i) is not None:
-                                g.answer_set["%d" % i] = case(int(session.get("%d" % i)))
-                                g.f.write("%d. " % i + case(int(session.get("%d" % i))) + "\n")
-                    finally:
-                        g.f.write(str(g.answer_set))
-                        g.f.close()
-                        g.answer_set.clear()
-                    return redirect("/logout")
-                else:
-                    return redirect("/login")
+                return redirect("/login")
         else:
             return redirect('/login')
     else:
@@ -121,6 +91,25 @@ def answer(number):
             number = number - 1
         session['number'] = number
         return redirect('/answer/%d' % number)
+
+
+@app.route('/answer/submit', methods=['POST'])
+def submit():
+    session["%d" % g.total_num] = request.form.get("group1")
+    try:
+        g.f = open("%s" % session.get("username"), "w")
+        g.name = session.get("name")
+        g.answer_set = {"name": session.get("username")}
+        g.f.write("name: %s" % session.get("username") + "\n")
+        for i in range(1, g.total_num + 1):
+            if session.get("%d" % i) is not None:
+                g.answer_set["%d" % i] = case(int(session.get("%d" % i)))
+                g.f.write("%d. " % i + case(int(session.get("%d" % i))) + "\n")
+    finally:
+        g.f.write(str(g.answer_set))
+        g.f.close()
+        g.answer_set.clear()
+    return redirect("/logout")
 
 
 def case(i):
