@@ -18,7 +18,14 @@ Feel free to tell me your suggestions or your questions in the issues section
         "items" for options         #For now you can only put exactly 4 optioons
         "type" for the answertype   #"multiple" for multiple answers "textfield" for textanswers
                                     #"" or other strings will be judged as single choice question
+## Don't forget
+    Create a Folder name "answers" to let the program store final results 
+
 
 
 ## Enjoy :-)       
         
+# If you encounter any problem
+    try cleaning your cookies(or just clear session in your cookie)
+        You may lost all your selection
+    and then force refresh your page(ctrl+F5)
