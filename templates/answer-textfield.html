@@ -58,14 +58,14 @@
                 <img src="/static/images/{{ args.img_path }}" class="mdui-img-fluid mdui-img-rounded">
             {% endif %}
             <br>
-            <form method="POST" id="main_form">
+            <form method="post" id="main_form">
                 <input id="num" type="number" name="number" value="{{ args.number }}" hidden/>
 
                 <input id="forward_flag" type="text" name="forward" value="true" hidden/>
             </form>
             <div class="mdui-textfield mdui-textfield-floating-label" >
                 <label class="mdui-textfield-label">Answer</label>
-                <textarea class="mdui-textfield-input" rows="6" form="main_form" name="group1"></textarea>
+                <textarea class="mdui-textfield-input" rows="6" form="main_form" name="group2"></textarea>
             </div>
             <div class="mdui-row-xs-2">
                 <div class="mdui-col">

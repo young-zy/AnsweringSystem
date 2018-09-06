@@ -90,7 +90,10 @@ def answer(number):
             return redirect('/login')
     else:
         if request.form.get("forward") == "true":
-            session['%d' % int(request.form.get('number'))] = request.form.get('group1')
+            if request.form.get("group1") is not None:
+                session['%d' % int(request.form.get('number'))] = request.form.get("group1")
+            else:
+                session['%d' % int(request.form.get('number'))] = request.form.get("group2")
             number = number + 1
         else:
             if request.form.get('group1') is not None:
@@ -102,7 +105,10 @@ def answer(number):
 
 @app.route('/answer/submit', methods=['POST'])
 def submit():
-    session["%d" % g.total_num] = request.form.get("group1")
+    if request.form.get("group1") is not None:
+        session["%d" % g.total_num] = request.form.get("group1")
+    else:
+        session["%d" % g.total_num] = request.form.get("group2")
     try:
         g.f = open("%s" % session.get("username"), "w")
         g.name = session.get("name")
@@ -110,10 +116,15 @@ def submit():
         g.f.write("name: %s" % session.get("username") + "\n")
         for i in range(1, g.total_num + 1):
             if session.get("%d" % i) is not None:
-                g.answer_set["%d" % i] = list(map(int, session.get("%d" % i)))
-                g.f.write("%d. " % i)
-                for item in list(map(int, session.get("%d" % i))):
-                    g.f.write(case(item) + ", ")
+                if g.dict_arr[i-1]["type"] == "textfield":
+                    g.answer_set["%d" % i] = session.get("%d" % i)
+                    g.f.write("%d. " % i)
+                    g.f.write(session.get("%d" % i))
+                else:
+                    g.answer_set["%d" % i] = list(map(int, session.get("%d" % i)))
+                    g.f.write("%d. " % i)
+                    for item in list(map(int, session.get("%d" % i))):
+                        g.f.write(case(item) + ", ")
                 g.f.write("\n")
     finally:
         g.f.write(str(g.answer_set))
