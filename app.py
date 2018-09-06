@@ -109,10 +109,9 @@ def submit():
         session["%d" % g.total_num] = request.form.get("group1")
     else:
         session["%d" % g.total_num] = request.form.get("group2")
+    g.answer_set = {"name": session.get("username")}
     try:
-        g.f = open("%s" % session.get("username"), "w")
-        g.name = session.get("name")
-        g.answer_set = {"name": session.get("username")}
+        g.f = open("answers/%s" % session.get("username"), "w")
         g.f.write("name: %s" % session.get("username") + "\n")
         for i in range(1, g.total_num + 1):
             if session.get("%d" % i) is not None:
@@ -126,8 +125,8 @@ def submit():
                     for item in list(map(int, session.get("%d" % i))):
                         g.f.write(case(item) + ", ")
                 g.f.write("\n")
-    finally:
         g.f.write(str(g.answer_set))
+    finally:
         g.f.close()
         g.answer_set.clear()
     return redirect("/logout")
