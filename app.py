@@ -82,7 +82,7 @@ def answer(number):
                 if g.dict_arr[number - 1]["type"] == "multiple":
                     return render_template("answer-multiple.html", args=args)
                 if g.dict_arr[number - 1]["type"] == "textfield":
-                    return render_template("answer-textfield.html",args=args)
+                    return render_template("answer-textfield.html", args=args)
                 return render_template('answer.html', args=args)
             else:
                 return redirect("/login")
