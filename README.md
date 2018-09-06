@@ -25,3 +25,7 @@ Feel free to tell me your suggestions or your questions in the issues section
 
 ## Enjoy :-)       
         
+# If you encounter any problem
+    try cleaning your cookies(or just clear session in your cookie)
+        You may lost all your selection
+    and then force refresh your page(ctrl+F5)
